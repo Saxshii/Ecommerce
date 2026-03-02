@@ -15,3 +15,17 @@ exports.signup = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.login = async (req, res, next) => {
+  try {
+    const { user, token } = await authService.login(req.body);
+
+    res.status(200).json({
+      status: "success",
+      token,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

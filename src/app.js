@@ -17,6 +17,11 @@ app.get("/error-test", (req, res, next) => {
   next(new AppError("Test error working", 400));
 });
 
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+
+
+
 // Test route
 app.get("/", (req, res) => {
   res.send("E-commerce API is running");
