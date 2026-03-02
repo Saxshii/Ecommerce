@@ -1,36 +1,30 @@
-// src/app.js
-
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 
 const app = express();
-
-
-// ===== MIDDLEWARE =====
-
-// Parse JSON
+// built in middlewares
 app.use(express.json());
-
-// Parse form data
 app.use(express.urlencoded({ extended: true }));
-
-// Enable CORS
-app.use(cors());
-
-// Logger
-app.use(morgan("dev"));
-
-// Static files
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(cors());
+app.use(morgan("dev"));
 
-// ===== TEST ROUTE =====
+const AppError = require("./utils/AppError");
+app.get("/error-test", (req, res, next) => {
+  next(new AppError("Test error working", 400));
+});
 
+// Test route
 app.get("/", (req, res) => {
   res.send("E-commerce API is running");
 });
 
+
+const errorHandler = require("./middleware/errorMiddleware");
+
+app.use(errorHandler);
 
 module.exports = app;
